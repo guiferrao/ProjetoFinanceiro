@@ -13,6 +13,6 @@ public class Transacao
         Saida = 2
     }
     public TipoTransacao Tipo { get; set; }
-    public int UsuarioId { get; set; }
+    public Guid UsuarioId { get; set; }
     public Usuario Usuario { get; set; } = null!;
 }
