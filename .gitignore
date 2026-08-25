@@ -6,6 +6,9 @@
 # dotenv files
 .env
 
+# Configurações locais secretas
+appsettings.Local.json
+
 # User-specific files
 *.rsuser
 *.suo

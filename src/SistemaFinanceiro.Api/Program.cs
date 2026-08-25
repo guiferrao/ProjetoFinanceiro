@@ -1,8 +1,21 @@
+using Microsoft.EntityFrameworkCore;
+using ProjetoFinanceiro.Domain.Interfaces;
+using ProjetoFinanceiro.Infrastructure.Data;
+using ProjetoFinanceiro.Infrastructure.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Configuration.AddJsonFile("appsettings.Local.json", optional: true, reloadOnChange: true);
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+builder.Services.AddScoped<ITransacaoRepository, TransacaoRepository>();
 
 var app = builder.Build();
 
