@@ -9,11 +9,13 @@ namespace ProjetoFinanceiro.Application.Services;
 public class AuthService : IAuthService
 {
     private readonly IUsuarioRepository _usuarioRepository;
+    private readonly ITokenService _tokenService;
     private readonly PasswordHasher<Usuario> _passwordHasher;
 
-    public AuthService(IUsuarioRepository usuarioRepository)
+    public AuthService(IUsuarioRepository usuarioRepository, ITokenService tokenService)
     {
         _usuarioRepository = usuarioRepository;
+        _tokenService = tokenService;
         _passwordHasher = new PasswordHasher<Usuario>();
     }
 
@@ -36,6 +38,7 @@ public class AuthService : IAuthService
 
         await _usuarioRepository.AdicionarAsync(usuario);
 
+        var token = _tokenService.GerarToken(usuario);
         return new TokenResponseDto("TOKEN_AQUI", DateTime.UtcNow.AddHours(2));
     }
 
@@ -55,6 +58,7 @@ public class AuthService : IAuthService
             throw new Exception("Email ou senha invalidos");
         }
 
+        var token = _tokenService.GerarToken(usuario);
         return new TokenResponseDto("TOKEN_AQUI", DateTime.UtcNow.AddHours(2));
     }
 }
