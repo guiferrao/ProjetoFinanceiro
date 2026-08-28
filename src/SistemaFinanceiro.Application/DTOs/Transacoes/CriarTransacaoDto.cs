@@ -1,4 +1,4 @@
-using static ProjetoFinanceiro.Domain.Entities.Transacao;
+using ProjetoFinanceiro.Domain.Enums;
 
 namespace ProjetoFinanceiro.Application.DTOs.Auth;
 
