@@ -39,7 +39,7 @@ public class AuthService : IAuthService
         await _usuarioRepository.AdicionarAsync(usuario);
 
         var token = _tokenService.GerarToken(usuario);
-        return new TokenResponseDto("TOKEN_AQUI", DateTime.UtcNow.AddHours(2));
+        return new TokenResponseDto(token, DateTime.UtcNow.AddHours(2));
     }
 
     public async Task<TokenResponseDto> LoginAsync(LoginDto dto)
@@ -59,6 +59,6 @@ public class AuthService : IAuthService
         }
 
         var token = _tokenService.GerarToken(usuario);
-        return new TokenResponseDto("TOKEN_AQUI", DateTime.UtcNow.AddHours(2));
+        return new TokenResponseDto(token, DateTime.UtcNow.AddHours(2));
     }
 }
