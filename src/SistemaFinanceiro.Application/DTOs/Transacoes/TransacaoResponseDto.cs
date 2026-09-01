@@ -7,5 +7,7 @@ public record TransacaoResponseDto(
     decimal Valor,
     DateTime Data,
     TipoTransacao Tipo,
+    Metodo Metodo,
+    string Categoria,
     Guid UsuarioId
 );

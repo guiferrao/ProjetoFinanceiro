@@ -1,5 +1,10 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.DataAnnotations;
+using ProjetoFinanceiro.Application.DTOs.Auth;
+using ProjetoFinanceiro.Application.Interfaces;
+using ProjetoFinanceiro.Domain.Interfaces;
 
 namespace ProjetoFinanceiro.Api.Controllers;
 
@@ -8,14 +13,32 @@ namespace ProjetoFinanceiro.Api.Controllers;
 [Route("api/transacoes")]
 public class TransacoesController : ControllerBase
 {
-    [HttpGet]
-    public IActionResult GetTrasancoes()
-    {
-        var nomeUsuario = User.Identity?.Name;
+    private readonly ITransacaoService _transacaoService;
 
-        return Ok(new
-        {
-            mensagem = $"Acesso liberado! Bem vindo, {nomeUsuario}"
-        });
+    public TransacoesController(ITransacaoService transacaoService)
+    {
+        _transacaoService = transacaoService;
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> ObterTransacoes()
+    {
+        var usuarioId = ObterUsuarioIdLogado();
+        var transacoes = await _transacaoService.ObterPorUsuarioAsync(usuarioId);
+        return Ok(transacoes);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CriarTransacao([FromBody] CriarTransacaoDto dto)
+    {
+        var usuarioId = ObterUsuarioIdLogado();
+        var novaTransacao = await _transacaoService.CriarAsync(usuarioId, dto);
+        return Ok(novaTransacao);
+    }
+
+    private Guid ObterUsuarioIdLogado()
+    {
+        var claimId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        return Guid.TryParse(claimId, out var id) ? id : throw new Exception("Usuario nao identificado no token");
     }
 }

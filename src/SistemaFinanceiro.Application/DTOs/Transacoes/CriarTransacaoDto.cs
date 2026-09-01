@@ -6,5 +6,7 @@ public record CriarTransacaoDto(
     decimal Valor,
     DateTime Data,
     TipoTransacao Tipo,
+    Metodo Metodo,
+    string Categoria,
     Guid UsuarioId
 );
