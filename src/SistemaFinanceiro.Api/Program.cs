@@ -8,6 +8,8 @@ using ProjetoFinanceiro.Infrastructure.Repositories;
 using ProjetoFinanceiro.Application.Interfaces;
 using ProjetoFinanceiro.Application.Services;
 using ProjetoFinanceiro.Infrastructure.Auth;
+using Microsoft.AspNetCore.OpenApi;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -50,7 +52,8 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.MapOpenApi(); 
+    app.MapScalarApiReference(); 
 }
 
 app.UseHttpsRedirection();
